@@ -32,6 +32,11 @@ public class PlayerMotor : MonoBehaviour {
         cameraRotation = rot;
     }
 
+    public void Jump(float jumpHeigt)
+    {
+        rb.velocity = new Vector3(rb.velocity.x, jumpHeigt, rb.velocity.z);
+    }
+
     void FixedUpdate()
     {
         PreformMovement();
@@ -54,4 +59,6 @@ public class PlayerMotor : MonoBehaviour {
             cam.transform.Rotate(cameraRotation);
         }
     }
+
+    
 }
