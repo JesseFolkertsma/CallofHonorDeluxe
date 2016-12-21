@@ -3,16 +3,17 @@ using UnityEngine.Networking;
 using UnityEngine.Networking.NetworkSystem;
 using System.Collections;
 
-public class PlayerHands : MonoBehaviour {
+public class PlayerHands : NetworkBehaviour {
 
     [SerializeField]
     Transform cam;
 
     [SerializeField]
-    float throwForce = 100f;
+    float throwForce = 10f;
 
     public LayerMask mask;
     public GameObject holding;
+    public GameObject preFab;
 
 	void Update()
     {
@@ -26,6 +27,19 @@ public class PlayerHands : MonoBehaviour {
                 Grab();
             }
         }
+    }
+
+    [Command]
+    void CmdSpawn()
+    {
+        RpcSpawn();
+    }
+
+    [ClientRpc]
+    void RpcSpawn()
+    {
+        GameObject g = (GameObject)Instantiate(preFab, transform.position + transform.forward * 2, transform.rotation);
+        NetworkServer.Spawn(g);
     }
 
     void Holding()
@@ -46,7 +60,6 @@ public class PlayerHands : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(cam.position, cam.forward, out hit, 100, mask))
         {
-            print("hoi");
             if(hit.transform.tag == "Pickup")
             {
                 holding = hit.transform.gameObject;
@@ -62,7 +75,7 @@ public class PlayerHands : MonoBehaviour {
 
     void Throw()
     {
-        holding.GetComponent<Rigidbody>().velocity = cam.forward * 10;
+        holding.GetComponent<Rigidbody>().velocity = cam.forward * throwForce;
         holding = null;
     }
 }
