@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.Networking.NetworkSystem;
 using System.Collections;
 
 public class PlayerHands : MonoBehaviour {
@@ -16,21 +18,26 @@ public class PlayerHands : MonoBehaviour {
     {
         if (holding != null)
         {
-            holding.transform.position = cam.position + cam.forward * 2;
-            if (Input.GetButtonDown("Interact"))
-            {
-                Drop();
-            }
-            if (Input.GetButtonDown("Fire1"))
-            {
-                Throw();
-            }
+            Holding();
         }
         else {
             if (Input.GetButtonDown("Interact"))
             {
                 Grab();
             }
+        }
+    }
+
+    void Holding()
+    {
+        holding.transform.position = cam.position + cam.forward * 2;
+        if (Input.GetButtonDown("Interact"))
+        {
+            Drop();
+        }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Throw();
         }
     }
 
