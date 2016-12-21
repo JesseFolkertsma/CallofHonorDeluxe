@@ -50,6 +50,7 @@ public class PlayerHands : MonoBehaviour {
             if(hit.transform.tag == "Pickup")
             {
                 holding = hit.transform.gameObject;
+                hit.transform.GetComponent<NetworkIdentity>().AssignClientAuthority(GetComponent<PlayerSetup>().connectionToClient);
             }
         }
     }
