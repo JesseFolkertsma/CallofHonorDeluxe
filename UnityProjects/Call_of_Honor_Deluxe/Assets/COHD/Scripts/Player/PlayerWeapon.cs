@@ -3,15 +3,42 @@ using System.Collections;
 
 public class PlayerWeapon : MonoBehaviour {
 
-    public Weapon weapon;
+    public WeaponTompson weapon;
+    public Animator anim;
+
+    public Transform cam;
+
+    bool isShooting = false;
 
     void Update()
     {
         if (weapon != null)
         {
-            if (Input.GetButtonDown("Fire1"))
+            weapon.GunUpdate();
+            if (Input.GetButton("Fire1"))
             {
-                weapon.Attack();
+                weapon.Attack(cam);
+                isShooting = true;
+            }
+            else
+            {
+                isShooting = false;
+            }
+            anim.SetBool("IsShooting", isShooting);
+
+            if (Input.GetButtonDown("Fire2"))
+            {
+                anim.SetBool("Aiming", true);
+            }
+            else if (Input.GetButtonUp("Fire2"))
+            {
+                anim.SetBool("Aiming", false);
+            }
+
+            if (Input.GetButtonDown("R"))
+            {
+                weapon.Reload();
+                anim.SetTrigger("Reload");
             }
         }
     }

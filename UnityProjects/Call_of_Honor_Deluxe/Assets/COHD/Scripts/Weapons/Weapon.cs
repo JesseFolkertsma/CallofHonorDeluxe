@@ -2,12 +2,12 @@
 using System.Collections;
 
 [System.Serializable]
-public abstract class Weapon : MonoBehaviour {
+public abstract class Weapon {
 
     public float damage;
     public float range;
 
-    public abstract void Attack();
+    public abstract bool Attack(Transform cam);
 
     public virtual void Drop()
     {

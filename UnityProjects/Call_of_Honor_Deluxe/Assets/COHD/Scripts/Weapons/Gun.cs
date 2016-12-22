@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 
+[System.Serializable]
 public class Gun : Weapon {
 
     public float fireRate;
@@ -26,7 +27,7 @@ public class Gun : Weapon {
     }
 
     float rateTimer;
-    void Update()
+    public void GunUpdate()
     {
         if (waitForRate)
         {
@@ -38,13 +39,22 @@ public class Gun : Weapon {
         }
     }
     
-    public override void Attack()
+    public override bool Attack(Transform cam)
     {
         if (CanAttack)
         {
+            RaycastHit hit;
+            if(Physics.Raycast(cam.position, cam.forward, out hit, range, LayerMask.NameToLayer("LocalPlayer"))){
+                if(hit.transform.tag == "Player")
+                {
+                    Debug.Log("Hit dat player " + hit.transform.name);
+                }
+            }
             bullets--;
             AttackWait();
+            return true;
         }
+        return false;
     }
 
     public virtual void AttackWait()
